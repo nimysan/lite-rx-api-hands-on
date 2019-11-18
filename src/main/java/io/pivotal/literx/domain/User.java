@@ -30,7 +30,7 @@ public class User {
 	public String getLastname() {
 		return lastname;
 	}
-
+	
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) {
