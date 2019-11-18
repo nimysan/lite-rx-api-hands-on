@@ -59,8 +59,8 @@ public class Part03StepVerifier {
 	// and another one with "jpinkman" then completes successfully.
 	void expectSkylerJesseComplete(Flux<User> flux) {
 		 StepVerifier.create(flux)
-		   .expectNext(User.SKYLER)
-		   .expectNext(User.JESSE)
+		   .expectNextMatches(t-> User.SKYLER.getUsername().equals(t.getUsername()))
+		   .expectNextMatches(t-> User.JESSE.getUsername().equals(t.getUsername()))
 		   .expectComplete()
 		   .verify();
 	}
@@ -79,7 +79,9 @@ public class Part03StepVerifier {
 	// by manipulating virtual time thanks to StepVerifier#withVirtualTime, notice how long the test takes
 	void expect3600Elements(Supplier<Flux<Long>> supplier) {
 		StepVerifier.withVirtualTime(supplier)
-		.thenAwait(Duration.ofSeconds(5)).expectComplete().verify(Duration.ofSeconds(5));
+		.thenAwait(Duration.ofSeconds(3600))
+		.expectNextCount(3600)
+		.expectComplete();
 	}
 
 	private void fail() {
